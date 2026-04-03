@@ -14,34 +14,46 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "pyright" },
+				ensure_installed = { "lua_ls", "ts_ls", "pyright", "ruff", "eslint" },
 			})
 		end,
 	},
 
 	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			vim.lsp.enable("lua_ls")
-			vim.lsp.enable("ts_ls")
-			vim.lsp.enable("pyright")
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-		end,
-	},
+        "neovim/nvim-lspconfig",
+        config = function()
+            vim.lsp.config('pyright', {
+                settings = {
+                    python = {
+                        analysis = {
+                            diagnosticMode = 'off',
+                        },
+                    },
+                },
+            })
+            vim.lsp.enable("lua_ls")
+            vim.lsp.enable("ts_ls")
+            vim.lsp.enable("pyright")
+            vim.lsp.enable("ruff")
+            vim.lsp.enable("eslint")
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+            vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+        end,
+    },
 
-	{
-		"nvim-telescope/telescope-ui-select.nvim",
-		config = function()
-			require("telescope").setup({
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown({}),
-					},
-				},
-			})
-			require("telescope").load_extension("ui-select")
-		end,
-	},
+    {
+        "nvim-telescope/telescope-ui-select.nvim",
+        config = function()
+            require("telescope").setup({
+                extensions = {
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown({}),
+                    },
+                },
+            })
+            require("telescope").load_extension("ui-select")
+        end,
+    },
 }
+
