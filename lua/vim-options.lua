@@ -9,3 +9,4 @@ vim.diagnostic.config({
 })
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.o.wrap = false
