@@ -6,6 +6,12 @@ return {
         "MunifTanjim/nui.nvim",
         "nvim-tree/nvim-web-devicons", -- optional, but recommended
     },
+    opts = {
+        window = {
+            position = "left",
+            width = 25,
+        },
+    },
     lazy = false, -- neo-tree will lazily load itself
     config = function()
         vim.keymap.set('n', '<C-n>', ':Neotree filesystem toggle left<CR>', { desc = 'Opens Filesystem using Neo-tree to the left' })
