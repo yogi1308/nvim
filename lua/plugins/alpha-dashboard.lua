@@ -21,7 +21,10 @@ return {
             dashboard.button("f", "  > Find file", ":Telescope find_files hidden=true<CR>"),
             dashboard.button("e", "  > New file",   ":ene <BAR> startinsert <CR>"),
             dashboard.button("r", "  > Recent",     ":Telescope oldfiles<CR>"),
-            dashboard.button("s", "  > Settings",   ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>"),
+            dashboard.button("g", "  > Find Text",       ":Telescope live_grep<CR>"),
+            dashboard.button("p", "  > Projects", ":Telescope file_browser path=~/projects<CR>"),
+            dashboard.button("c", "  > Config",          ":e $MYVIMRC<CR>"),
+            dashboard.button("l", "  > Lazy",            ":Lazy<CR>"),
             dashboard.button("q", "  > Quit NVIM",  ":qa<CR>"),
         }
 

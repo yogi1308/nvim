@@ -17,5 +17,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 vim.keymap.set("n", "<leader>rn", function()
-    vim.opt.relativenumber = not vim.opt.relativenumber:get()
+    vim.wo.relativenumber = not vim.wo.relativenumber
 end, { desc = "Toggle relative numbers" })
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
