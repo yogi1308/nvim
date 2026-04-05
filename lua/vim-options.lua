@@ -21,3 +21,9 @@ vim.keymap.set("n", "<leader>rn", function()
 end, { desc = "Toggle relative numbers" })
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
+vim.keymap.set("n", "<leader>t", function()
+    vim.cmd("botright split")
+    vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
+    vim.cmd("terminal")
+    vim.cmd("startinsert")
+end, { desc = "Open terminal" })

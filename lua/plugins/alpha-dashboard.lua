@@ -23,7 +23,7 @@ return {
             dashboard.button("r", "  > Recent",     ":Telescope oldfiles<CR>"),
             dashboard.button("g", "  > Find Text",       ":Telescope live_grep<CR>"),
             dashboard.button("p", "  > Projects", ":Telescope file_browser path=~/projects<CR>"),
-            dashboard.button("c", "  > Config",          ":e $MYVIMRC<CR>"),
+            dashboard.button("c", "  > Config", ":e $MYVIMRC | cd ~/.dotfiles/nvim/.config/nvim<CR>"),
             dashboard.button("l", "  > Lazy",            ":Lazy<CR>"),
             dashboard.button("q", "  > Quit NVIM",  ":qa<CR>"),
         }
