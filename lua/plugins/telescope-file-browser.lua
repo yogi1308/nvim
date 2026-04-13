@@ -12,6 +12,7 @@ return {
                         ["i"] = {},
                         ["n"] = {
                             ["<leader>nh"] = fb_actions.toggle_hidden,
+                            ["<leader>gg"] = fb_actions.goto_home_dir,
                             ["o"] = function(prompt_bufnr)
                                 local selection = require("telescope.actions.state").get_selected_entry()
                                 require("telescope.actions").close(prompt_bufnr)

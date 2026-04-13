@@ -27,3 +27,13 @@ vim.keymap.set("n", "<leader>t", function()
     vim.cmd("terminal")
     vim.cmd("startinsert")
 end, { desc = "Open terminal" })
+vim.opt.scrolloff = 10
+vim.keymap.set('n', '<C-l>', '<cmd>nohlsearch<CR><C-l>', { desc = "Redraw and clear highlights" })
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
+      vim.cmd("silent! write")
+    end
+  end,
+})
