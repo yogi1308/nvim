@@ -14,7 +14,7 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "pyright", "ruff", "eslint", "emmet_language_server", "tailwindcss-language-server" },
+				ensure_installed = { "lua_ls", "ts_ls", "pyright", "ruff", "eslint", "emmet_language_server", "tailwindcss", "clangd", "ruby_lsp", "rubocop", "ruff", "cssls"},
 			})
 		end,
 	},
@@ -36,6 +36,13 @@ return {
             vim.lsp.enable("pyright")
             vim.lsp.enable("ruff")
             vim.lsp.enable("eslint")
+            vim.lsp.enable("emmet_language_server")
+            vim.lsp.enable("tailwindcss")
+            vim.lsp.enable("clangd")
+            vim.lsp.enable("ruby_lsp")
+            vim.lsp.enable("rubocop")
+            vim.lsp.enable("ruff")
+            vim.lsp.enable("cssls")
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})

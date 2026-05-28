@@ -19,7 +19,6 @@ return {
 				"bash",
 				"c",
 				"cpp",
-				"lua",
 				"markdown",
 				"python",
 				"toml",

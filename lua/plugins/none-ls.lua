@@ -8,8 +8,8 @@ return {
 				null_ls.builtins.formatting.stylua,
 
 				--ruby
-				-- null_ls.builtins.formatting.rubocop,
-				-- null_ls.builtins.diagnostics.rubocop,
+				null_ls.builtins.formatting.rubocop,
+				null_ls.builtins.diagnostics.rubocop,
 
 				--js/ts
 				null_ls.builtins.formatting.prettier,
