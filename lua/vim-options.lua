@@ -2,14 +2,14 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Tab settings
-vim.cmd("set expandtab")        -- use spaces instead of tabs
-vim.cmd("set tabstop=4")        -- tab = 4 spaces
-vim.cmd("set softtabstop=4")    -- backspace deletes 4 spaces
-vim.cmd("set shiftwidth=4")     -- indent = 4 spaces
+vim.cmd("set expandtab") -- use spaces instead of tabs
+vim.cmd("set tabstop=4") -- tab = 4 spaces
+vim.cmd("set softtabstop=4") -- backspace deletes 4 spaces
+vim.cmd("set shiftwidth=4") -- indent = 4 spaces
 
 -- Show inline diagnostics
 vim.diagnostic.config({
-    virtual_text = true,
+	virtual_text = true,
 })
 
 -- Line numbers
@@ -24,14 +24,14 @@ vim.opt.termguicolors = true
 
 -- Highlight yanked text briefly
 vim.api.nvim_create_autocmd("TextYankPost", {
-    callback = function()
-        vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
-    end,
+	callback = function()
+		vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
+	end,
 })
 
 -- Toggle relative line numbers
 vim.keymap.set("n", "<leader>rn", function()
-    vim.wo.relativenumber = not vim.wo.relativenumber
+	vim.wo.relativenumber = not vim.wo.relativenumber
 end, { desc = "Toggle relative numbers" })
 
 -- Persistent undo history across sessions
@@ -40,48 +40,70 @@ vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
 -- Open terminal in bottom split (40% height)
 vim.keymap.set("n", "<leader>t", function()
-    vim.cmd("botright split")
-    vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
-    vim.cmd("terminal")
-    vim.cmd("startinsert")
+	vim.cmd("botright split")
+	vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
+	vim.cmd("terminal")
+	vim.cmd("startinsert")
 end, { desc = "Open terminal" })
 
 -- Keep cursor 10 lines from top/bottom edge when scrolling
 vim.opt.scrolloff = 10
 
 -- Clear search highlights
-vim.keymap.set('n', '<C-l>', '<cmd>nohlsearch<CR><C-l>', { desc = "Redraw and clear highlights" })
+vim.keymap.set("n", "<C-l>", "<cmd>nohlsearch<CR><C-l>", { desc = "Redraw and clear highlights" })
 
 -- Auto-save when leaving insert mode or text changes
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-  pattern = "*",
-  callback = function()
-    if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
-      vim.cmd("silent! write")
-    end
-  end,
+	pattern = "*",
+	callback = function()
+		if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
+			vim.lsp.buf.format({ async = false }) -- format on auto save
+			vim.cmd("silent! write")
+		end
+	end,
 })
 
 -- Replace word under cursor in current file (with confirmation)
-vim.keymap.set('n', '<leader>ss', function()
-  local word = vim.fn.expand('<cword>')
-  local replace = vim.fn.input("Replace '" .. word .. "' with: ")
-  if replace ~= "" then
-    vim.cmd(string.format('%%s/\\<%s\\>/%s/gc', word, replace))
-  end
+vim.keymap.set("n", "<leader>ss", function()
+	local word = vim.fn.expand("<cword>")
+	local replace = vim.fn.input("Replace '" .. word .. "' with: ")
+	if replace ~= "" then
+		vim.cmd(string.format("%%s/\\<%s\\>/%s/gc", word, replace))
+	end
 end)
 
 -- Move line up/down in normal mode
-vim.keymap.set('n', '<A-Down>', ':m .+1<CR>==', { desc = "Move line down" })
-vim.keymap.set('n', '<A-Up>', ':m .-2<CR>==', { desc = "Move line up" })
+vim.keymap.set("n", "<A-Down>", ":m .+1<CR>==", { desc = "Move line down" })
+vim.keymap.set("n", "<A-Up>", ":m .-2<CR>==", { desc = "Move line up" })
 
 -- Move selection up/down in visual mode
-vim.keymap.set('v', '<A-Down>', ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-vim.keymap.set('v', '<A-Up>', ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "<A-Up>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- Copy entire file to system clipboard
-vim.keymap.set('n', '<leader>ya', 'gg"+yG', { desc = "Copy entire file to system clipboard" })
+vim.keymap.set("n", "<leader>ya", 'gg"+yG', { desc = "Copy entire file to system clipboard" })
+
+-- delete all the content from the file
+vim.keymap.set("n", "<leader>da", 'gg"+dG', { desc = "delete all the content from the file" })
 
 -- Yank to system clipboard (supports motions e.g. <leader>yG, <leader>y$)
-vim.keymap.set({'n', 'v'}, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 
+vim.keymap.set("n", "<leader>cb", function()
+	local file = vim.fn.expand("%")
+	local out = vim.fn.expand("%:r")
+	vim.cmd("botright split | resize 10 | terminal g++ -g -o " .. out .. " " .. file)
+end, { desc = "Compile current cpp file" })
+
+-- Run current cpp executable
+vim.keymap.set("n", "<leader>cr", function()
+	local out = vim.fn.expand("%:r")
+	vim.cmd("botright split | resize 10 | terminal ./" .. out)
+end, { desc = "Run current cpp file" })
+
+-- Compile and run current cpp file
+vim.keymap.set("n", "<leader>cx", function()
+	local file = vim.fn.expand("%")
+	local out = vim.fn.expand("%:r")
+	vim.cmd("botright split | resize 10 | terminal g++ -g -o " .. out .. " " .. file .. " && ./" .. out)
+end, { desc = "Compile and run current cpp file" })

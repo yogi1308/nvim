@@ -14,6 +14,6 @@ return {
     },
     lazy = false, -- neo-tree will lazily load itself
     config = function()
-        vim.keymap.set('n', '<C-n>', ':Neotree filesystem toggle left<CR>', { desc = 'Opens Filesystem using Neo-tree to the left' })
+        vim.keymap.set('n', '<leader>nn', ':Neotree filesystem toggle left<CR>', { desc = 'Opens Filesystem using Neo-tree to the left' })
     end
 }
