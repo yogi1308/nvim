@@ -1,34 +1,58 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=4")
-vim.cmd("set softtabstop=4")
-vim.cmd("set shiftwidth=4")
+
+-- Tab settings
+vim.cmd("set expandtab")        -- use spaces instead of tabs
+vim.cmd("set tabstop=4")        -- tab = 4 spaces
+vim.cmd("set softtabstop=4")    -- backspace deletes 4 spaces
+vim.cmd("set shiftwidth=4")     -- indent = 4 spaces
+
+-- Show inline diagnostics
 vim.diagnostic.config({
     virtual_text = true,
 })
+
+-- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- Disable line wrap
 vim.o.wrap = false
+
+-- Enable 24-bit color
 vim.opt.termguicolors = true
+
+-- Highlight yanked text briefly
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
         vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
     end,
 })
+
+-- Toggle relative line numbers
 vim.keymap.set("n", "<leader>rn", function()
     vim.wo.relativenumber = not vim.wo.relativenumber
 end, { desc = "Toggle relative numbers" })
+
+-- Persistent undo history across sessions
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
+
+-- Open terminal in bottom split (40% height)
 vim.keymap.set("n", "<leader>t", function()
     vim.cmd("botright split")
     vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
     vim.cmd("terminal")
     vim.cmd("startinsert")
 end, { desc = "Open terminal" })
+
+-- Keep cursor 10 lines from top/bottom edge when scrolling
 vim.opt.scrolloff = 10
+
+-- Clear search highlights
 vim.keymap.set('n', '<C-l>', '<cmd>nohlsearch<CR><C-l>', { desc = "Redraw and clear highlights" })
+
+-- Auto-save when leaving insert mode or text changes
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   pattern = "*",
   callback = function()
@@ -37,3 +61,27 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
     end
   end,
 })
+
+-- Replace word under cursor in current file (with confirmation)
+vim.keymap.set('n', '<leader>ss', function()
+  local word = vim.fn.expand('<cword>')
+  local replace = vim.fn.input("Replace '" .. word .. "' with: ")
+  if replace ~= "" then
+    vim.cmd(string.format('%%s/\\<%s\\>/%s/gc', word, replace))
+  end
+end)
+
+-- Move line up/down in normal mode
+vim.keymap.set('n', '<A-Down>', ':m .+1<CR>==', { desc = "Move line down" })
+vim.keymap.set('n', '<A-Up>', ':m .-2<CR>==', { desc = "Move line up" })
+
+-- Move selection up/down in visual mode
+vim.keymap.set('v', '<A-Down>', ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set('v', '<A-Up>', ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+-- Copy entire file to system clipboard
+vim.keymap.set('n', '<leader>ya', 'gg"+yG', { desc = "Copy entire file to system clipboard" })
+
+-- Yank to system clipboard (supports motions e.g. <leader>yG, <leader>y$)
+vim.keymap.set({'n', 'v'}, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
+

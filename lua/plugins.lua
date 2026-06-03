@@ -24,4 +24,21 @@ return {
 			})
 		end,
 	},
+	{
+		"MagicDuck/grug-far.nvim",
+		config = function()
+			require("grug-far").setup({
+				windowCreationCommand = "topleft vsplit | vertical resize 50", -- open as left sidebar, 50 cols wide
+			})
+
+			-- open grug-far sidebar
+			vim.keymap.set("n", "<leader>sr", "<cmd>GrugFar<cr>")
+
+			-- open grug-far sidebar with word under cursor pre-filled in search
+			vim.keymap.set("n", "<leader>sw", function()
+				require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
+			end)
+		end,
+	},
+    { "mg979/vim-visual-multi" }
 }

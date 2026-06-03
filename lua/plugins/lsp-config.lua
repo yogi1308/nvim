@@ -14,7 +14,7 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "pyright", "ruff", "eslint", "emmet_language_server", "tailwindcss", "clangd", "ruby_lsp", "rubocop", "ruff", "cssls"},
+				ensure_installed = { "lua_ls", "ts_ls", "pyright", "ruff", "eslint", "emmet_language_server", "tailwindcss", "clangd", "ruby_lsp", "rubocop", "ruff", "cssls", "prismals", "hyprls"},
 			})
 		end,
 	},
@@ -43,6 +43,8 @@ return {
             vim.lsp.enable("rubocop")
             vim.lsp.enable("ruff")
             vim.lsp.enable("cssls")
+            vim.lsp.enable("prismals")
+            vim.lsp.enable("hyprls")
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
