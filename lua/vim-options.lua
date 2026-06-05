@@ -23,6 +23,10 @@ vim.o.wrap = false
 vim.opt.termguicolors = true
 
 -- Highlight yanked text briefly
+-- yank to system clipboard
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+Y')
+
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
@@ -57,7 +61,6 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
 	pattern = "*",
 	callback = function()
 		if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
-			vim.lsp.buf.format({ async = false }) -- format on auto save
 			vim.cmd("silent! write")
 		end
 	end,
@@ -88,6 +91,7 @@ vim.keymap.set("n", "<leader>da", 'gg"+dG', { desc = "delete all the content fro
 
 -- Yank to system clipboard (supports motions e.g. <leader>yG, <leader>y$)
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 
 vim.keymap.set("n", "<leader>cb", function()
 	local file = vim.fn.expand("%")
@@ -107,3 +111,12 @@ vim.keymap.set("n", "<leader>cx", function()
 	local out = vim.fn.expand("%:r")
 	vim.cmd("botright split | resize 10 | terminal g++ -g -o " .. out .. " " .. file .. " && ./" .. out)
 end, { desc = "Compile and run current cpp file" })
+
+-- blinking block cursor
+vim.opt.guicursor = "n-v-c:block-blinkon500-blinkoff500-blinkwait500,i-ci-ve:ver25,r-cr:hor20"
+
+-- paste over selection without overwriting yank register
+vim.keymap.set("v", "<leader>r", '"_dP', { desc = "Paste without overwriting yank register" })
+
+-- delete to black hole register (preserves yank register)
+vim.keymap.set({ "n", "v" }, "<leader>dd", '"_d', { desc = "Delete without overwriting yank register" })

@@ -40,5 +40,13 @@ return {
 			end)
 		end,
 	},
-    { "mg979/vim-visual-multi" }
+	{ "mg979/vim-visual-multi" },
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+	},
 }
