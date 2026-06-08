@@ -9,5 +9,8 @@ return {
         { "<leader>gp", ":Gitsigns preview_hunk<CR>", desc = "Gitsigns Preview hunk" },
         { "<leader>gb", ":Gitsigns blame_line<CR>", desc = "Gitsigns Blame line" },
         { "<leader>gd", ":Gitsigns diffthis<CR>", desc = "Gitsigns Diff this" },
+        { "<leader>gu", ":Gitsigns undo_stage_hunk<CR>",            desc = "Undo stage hunk" },
+        { "<leader>gB", ":Gitsigns toggle_current_line_blame<CR>",  desc = "Toggle line blame" },
+        { "ih",         ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Select hunk" },
     }
 }

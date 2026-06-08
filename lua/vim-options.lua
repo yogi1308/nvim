@@ -120,3 +120,7 @@ vim.keymap.set("v", "<leader>r", '"_dP', { desc = "Paste without overwriting yan
 
 -- delete to black hole register (preserves yank register)
 vim.keymap.set({ "n", "v" }, "<leader>dd", '"_d', { desc = "Delete without overwriting yank register" })
+
+-- Moving Buffer(tabs) left or rigt with alt
+vim.keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { desc = "Move buffer(tabs) right" })
+vim.keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { desc = "Move buffer(tabs) left" })
