@@ -213,9 +213,12 @@ Used after operators like `d` (delete), `c` (change), or `y` (yank):
 - `:split {file}`: Open file in horizontal split
 
 ### 💻 Shell & External
+- `<leader>t`: Open terminal in bottom split (40% height)
+- `<C-\><C-n>`: **Exit Terminal Mode** (returns to Normal mode)
 - `:!{cmd}`: Execute shell command (e.g., `:!ls`)
 - `:terminal`: Open a built-in terminal
 - `:r !{cmd}`: Read output of command into current buffer
+- `exit`: Type inside terminal to close it
 
 ---
 
