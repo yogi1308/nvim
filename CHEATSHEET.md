@@ -175,12 +175,51 @@ Used after operators like `d` (delete), `c` (change), or `y` (yank):
 - `@{register}`: Execute macro from `{register}` (e.g., `@a`)
 - `@@`: Repeat last executed macro
 
-### 🔍 Search
-- `/pattern`: Search for pattern
-- `?pattern`: Search backward for pattern
-- `n` / `N`: Next / Previous match
-- `*` / `#`: Search for word under cursor forward / backward
-- `:%s/old/new/g`: Global search and replace in file
+---
+
+## 🔄 Surrounding (Vim-Surround)
+
+| Command | Action | Example |
+|---------|--------|---------|
+| `ys{motion}{char}` | **Add** surrounding | `ysiw"` → `word` to `"word"` |
+| `yss{char}` | **Add** to entire line | `yss(` → `line` to `( line )` |
+| `ds{char}` | **Delete** surrounding | `ds"` → `"word"` to `word` |
+| `cs{old}{new}` | **Change** surrounding | `cs"'` → `"word"` to `'word'` |
+| `S{char}` | **Add** in Visual Mode | Select text, then `S<p>` to wrap in tags |
+
+**Pro Tip (Brackets):**
+- Use **opening** brackets `(` `[` `{` for **spaced** surroundings: `( word )`
+- Use **closing** brackets `)` `]` `}` for **tight** surroundings: `(word)`
+- Use `t` for **HTML/XML tags**: `cst"`, `dst`, `yst<div>`
+
+---
+
+## 🛠️ Command Line & Refactoring
+
+### 🔍 Find & Replace
+- `:%s/old/new/g`: Replace all `old` with `new` in current file
+- `:%s/old/new/gc`: Replace with **confirmation** for each match
+- `:s/old/new/g`: Replace in **current line** only
+- `:'<,'>s/old/new/g`: Replace in **visual selection**
+
+### 📂 File & Buffer Commands
+- `:w`: Save (write)
+- `:q`: Quit (fails if unsaved)
+- `:wq` / `:x`: Save and quit
+- `:q!`: Force quit (discard changes)
+- `:e {file}`: Open a new file
+- `:bd`: Delete (close) current buffer
+- `:vsplit {file}`: Open file in vertical split
+- `:split {file}`: Open file in horizontal split
+
+### 💻 Shell & External
+- `:!{cmd}`: Execute shell command (e.g., `:!ls`)
+- `:terminal`: Open a built-in terminal
+- `:r !{cmd}`: Read output of command into current buffer
+
+---
+
+## 🔍 Search (Telescope)
 
 ---
 
