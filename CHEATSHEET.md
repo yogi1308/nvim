@@ -10,8 +10,8 @@ Custom configuration for a powerful development environment.
 | `<localleader>` | `\` |
 | `<leader>y` | Yank selection to system clipboard |
 | `<leader>Y` | Yank line to system clipboard |
-| `<leader>ya` | Yank entire file |
-| `<leader>da` | Delete entire file |
+| `<leader>ya` | Yank entire file to system clipboard |
+| `<leader>da` | Delete entire file content |
 | `<leader>rn` | Toggle relative line numbers |
 | `<leader>t` | Open terminal in bottom split (40% height) |
 | `<C-l>` | Clear search highlights and redraw |
@@ -29,6 +29,8 @@ Custom configuration for a powerful development environment.
 | `<leader>cr` | Run current C++ file |
 | `<leader>cx` | Compile and run current C++ file |
 | `<leader>pr` | Run current Python file |
+| `<leader>sr` | Open project-wide search/replace (Grug-far) |
+| `<leader>sw` | Search for word under cursor (Grug-far) |
 | `Auto-save` | Enabled on `InsertLeave` and `TextChanged` |
 
 ---
@@ -74,6 +76,8 @@ Custom configuration for a powerful development environment.
 |------------|--------|
 | `<S-l>` | Go to next buffer |
 | `<S-h>` | Go to previous buffer |
+| `<A-l>` | Move current buffer (tab) right |
+| `<A-h>` | Move current buffer (tab) left |
 | `<leader>x` | Close current buffer (BufDel) |
 | `<leader>X` | Close all other buffers |
 | `<leader>1-9`| Jump to buffer by number |
@@ -103,6 +107,83 @@ Custom configuration for a powerful development environment.
 
 ---
 
+## 🧊 Multi-Cursor (Vim-Visual-Multi)
+
+| Keybinding | Action |
+|------------|--------|
+| `Ctrl-n` | Select word under cursor (add next with repeat) |
+| `Ctrl-Up/Down` | Create cursors vertically |
+| `Shift-Arrows` | Create cursors by selecting |
+| `n/N` | Next/Previous occurrence |
+| `q` | Skip current occurrence |
+| `Tab` | Toggle between **Cursor** and **Extend** mode |
+
+---
+
+## 📝 Markdown Preview
+
+| Keybinding | Action |
+|------------|--------|
+| `:MarkdownPreview` | Start the preview |
+| `:MarkdownPreviewStop` | Stop the preview |
+| `:MarkdownPreviewToggle` | Toggle the preview |
+
+---
+
+## 🏃 Common Vim Motions & Commands
+
+### 📍 Navigation
+- `h`, `j`, `k`, `l`: Left, Down, Up, Right
+- `w` / `W`: Move to start of next word / WORD (space-separated)
+- `b` / `B`: Move to start of previous word / WORD
+- `e` / `E`: Move to end of word / WORD
+- `0` / `^`: Move to start of line / first non-blank character
+- `$`: Move to end of line
+- `gg` / `G`: Go to first line / last line
+- `Ctrl-d` / `Ctrl-u`: Scroll half-page down / up
+- `f{char}` / `F{char}`: Jump to next / previous occurrence of `{char}`
+- `t{char}` / `T{char}`: Jump to just before / after next / previous occurrence of `{char}`
+- `;` / `,`: Repeat last `f/t` jump forward / backward
+- `%`: Jump between matching brackets
+
+### 📦 Text Objects (The "Inner" and "Around" Power)
+Used after operators like `d` (delete), `c` (change), or `y` (yank):
+- `iw`: **I**nner **w**ord (the word itself)
+- `aw`: **A**round **w**ord (word plus surrounding whitespace)
+- `it` / `at`: **I**nner / **A**round **t**ag (for HTML/XML)
+- `i"` / `a"` / `i'` / `a'`: **I**nner / **A**round quotes
+- `i(` / `a(` or `ib` / `ab`: **I**nner / **A**round parentheses (brackets)
+- `i{` / `a{` or `iB` / `aB`: **I**nner / **A**round curly braces
+- `ip` / `ap`: **I**nner / **A**round paragraph
+
+### ✏️ Editing
+- `i` / `a`: Insert before / after cursor (append)
+- `I` / `A`: Insert at start / end of line
+- `o` / `O`: Open new line below / above
+- `x`: Delete character under cursor
+- `dw` / `diw`: Delete word / delete inner word
+- `dd` / `D`: Delete line / delete to end of line
+- `cc` / `C`: Change line / change to end of line
+- `yy`: Yank (copy) line
+- `p` / `P`: Paste after / before cursor
+- `u` / `Ctrl-r`: Undo / Redo
+- `.`: Repeat last change
+
+### 📼 Macros (Automation)
+- `q{register}`: Start recording macro into `{register}` (e.g., `qa`)
+- `q`: Stop recording
+- `@{register}`: Execute macro from `{register}` (e.g., `@a`)
+- `@@`: Repeat last executed macro
+
+### 🔍 Search
+- `/pattern`: Search for pattern
+- `?pattern`: Search backward for pattern
+- `n` / `N`: Next / Previous match
+- `*` / `#`: Search for word under cursor forward / backward
+- `:%s/old/new/g`: Global search and replace in file
+
+---
+
 ## ✨ Enhancements
 
 ### 🔢 Dial (Incremental Logic)
@@ -129,4 +210,3 @@ When Neovim starts, use these shortcuts:
 - `c`: Config directory
 - `l`: Lazy plugin manager
 - `q`: Quit
-
