@@ -28,6 +28,9 @@ return {
 					"cssls",
 					"prismals",
 					"hyprls",
+					"bashls",
+					"shfmt",
+					"shellcheck",
 				},
 			})
 		end,
@@ -62,6 +65,9 @@ return {
 			vim.lsp.enable("cssls")
 			vim.lsp.enable("prismals")
 			vim.lsp.enable("hyprls")
+			vim.lsp.enable("bashls")
+			vim.lsp.enable("shfmt")
+			vim.lsp.enable("shellcheck")
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})

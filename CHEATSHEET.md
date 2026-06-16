@@ -46,13 +46,14 @@ Custom configuration for a powerful development environment.
 | `<leader>fb` | Find buffers |
 | `<leader>fh` | Help tags |
 | `<leader>fk` | Find keymaps |
+| `<leader>fo` | Recent files (oldfiles) |
 | `<leader>fr` | Clipboard history (Neoclip) |
 | `<leader>fb` | File Browser (enhanced navigation) |
 
 ### 📂 File Explorer (Neo-tree)
 | Keybinding | Action |
 |------------|--------|
-| `<leader>nn` | Toggle Neo-tree filesystem sidebar |
+| `<leader>nn` | Toggle Neo-tree sidebar (auto-resizes to 30 cols) |
 
 ---
 
@@ -64,9 +65,36 @@ Custom configuration for a powerful development environment.
 | `gd` | Go to definition |
 | `<leader>ca` | Code actions |
 | `<leader>gf` | Format buffer (None-ls) |
+| `<leader>gf` (visual) | Format selected range |
+| `<leader>yD` | Copy all diagnostics to clipboard |
+| `<leader>dq` | Send diagnostics to quickfix list |
 | `C-space` | Open completion menu (Blink.cmp) |
 | `C-n`/`C-p` | Select next/previous completion item |
 | `C-k` | Toggle signature help |
+
+---
+
+## 🤖 AI Coding (OpenCode)
+
+| Keybinding | Action |
+|------------|--------|
+| `<leader>oa` | Ask OpenCode about current buffer |
+| `<leader>os` | Select OpenCode mode |
+| `go` (operator) | Append range to OpenCode |
+| `goo` | Append current line to OpenCode |
+| `<S-C-u>` | Scroll OpenCode output up |
+| `<S-C-d>` | Scroll OpenCode output down |
+
+---
+
+## 💾 Session Management (Persistence)
+
+| Keybinding | Action |
+|------------|--------|
+| `<leader>qs` | Restore session for current directory |
+| `<leader>qS` | Select a session to load |
+| `<leader>ql` | Restore last session |
+| `<leader>qd` | Stop persistence (skip saving on exit) |
 
 ---
 
@@ -78,7 +106,7 @@ Custom configuration for a powerful development environment.
 | `<S-h>` | Go to previous buffer |
 | `<A-l>` | Move current buffer (tab) right |
 | `<A-h>` | Move current buffer (tab) left |
-| `<leader>x` | Close current buffer (BufDel) |
+| `<leader>x` | Close current buffer (also closes window if last buf in split) |
 | `<leader>X` | Close all other buffers |
 | `<leader>1-9`| Jump to buffer by number |
 
@@ -214,7 +242,8 @@ Used after operators like `d` (delete), `c` (change), or `y` (yank):
 
 ### 💻 Shell & External
 - `<leader>t`: Open terminal in bottom split (40% height)
-- `<C-\><C-n>`: **Exit Terminal Mode** (returns to Normal mode)
+- `<Esc>`: **Exit Terminal Mode** (returns to Normal mode)
+- `<C-\><C-n>`: Alternative way to exit Terminal Mode
 - `:!{cmd}`: Execute shell command (e.g., `:!ls`)
 - `:terminal`: Open a built-in terminal
 - `:r !{cmd}`: Read output of command into current buffer
@@ -236,6 +265,9 @@ Used after operators like `d` (delete), `c` (change), or `y` (yank):
 - `<leader>nm`: Toggle global minimap
 - `<leader>nf`: Focus minimap
 - `<leader>ns`: Toggle focus
+
+### 🎙️ Recording Indicator
+- Statusline shows **recording @{register}** when a macro is being recorded
 
 ### ❓ Help
 - `<leader>?`: Show buffer local keymaps (Which-key)

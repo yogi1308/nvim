@@ -124,3 +124,31 @@ vim.keymap.set({ "n", "v" }, "<leader>dd", '"_d', { desc = "Delete without overw
 -- Moving Buffer(tabs) left or rigt with alt
 vim.keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { desc = "Move buffer(tabs) right" })
 vim.keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { desc = "Move buffer(tabs) left" })
+
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+vim.keymap.set("n", "<leader>yD", function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local diags = vim.diagnostic.get(bufnr)
+	if #diags == 0 then
+		vim.notify("No diagnostics", vim.log.levels.WARN)
+		return
+	end
+
+	local lines = {}
+	for _, d in ipairs(diags) do
+		local msg = d.message:gsub("\n", " ") -- flatten multiline
+		table.insert(lines, string.format("Line %d: %s", d.lnum + 1, msg))
+	end
+
+	local text = table.concat(lines, "\n")
+	vim.fn.setreg("+", text)
+	vim.fn.setreg('"', text) -- fallback for no clipboard provider
+	vim.notify(string.format("Copied %d diagnostics", #diags), vim.log.levels.INFO)
+end)
+
+
+vim.keymap.set('n', '<leader>dq', function()
+  vim.diagnostic.setqflist()
+  vim.cmd('copen')
+end)

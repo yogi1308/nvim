@@ -13,6 +13,7 @@ return {
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
 		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 		vim.keymap.set("n", "<leader>fk", ":Telescope keymaps<CR>", { desc = "Telescope Find keymaps" })
+		vim.keymap.set("n", "<leader>fo", ":Telescope oldfiles<CR>", { desc = "Telescope open recent files" })
 		vim.keymap.set("n", "<leader>fa", function()
 			builtin.find_files({ hidden = true, no_ignore = true })
 		end, { desc = "Telescope find all files (hidden)" })

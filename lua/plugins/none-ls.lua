@@ -21,6 +21,10 @@ return {
 
 				-- python
 				null_ls.builtins.formatting.ruff,
+
+				-- bash
+				null_ls.builtins.formatting.shfmt,
+				null_ls.builtins.diagnostics.shellcheck,
 			},
 		})
 
@@ -30,5 +34,14 @@ return {
 			end,
 		})
 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+		vim.keymap.set("v", "<leader>gf", function()
+			vim.lsp.buf.format({
+				async = false,
+				range = {
+					["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+					["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+				},
+			})
+		end, {})
 	end,
 }

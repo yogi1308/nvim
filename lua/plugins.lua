@@ -69,4 +69,83 @@ return {
 			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 		},
 	},
+	{
+		"nickjvandyke/opencode.nvim",
+		version = "*", -- Latest stable release
+		config = function()
+			---@type opencode.Opts
+			vim.g.opencode_opts = {
+				-- Your configuration, if any; goto definition on the type or field for details
+			}
+
+			vim.o.autoread = true -- Required for `vim.g.opencode_opts.events.reload`
+
+			-- Recommended/example keymaps
+			vim.keymap.set({ "n", "x" }, "<leader>oa", function()
+				require("opencode").ask("@this: ")
+			end, { desc = "Ask OpenCode…" })
+			vim.keymap.set({ "n", "x" }, "<leader>os", function()
+				require("opencode").select()
+			end, { desc = "Select OpenCode…" })
+
+			vim.keymap.set({ "n", "x" }, "go", function()
+				return require("opencode").operator("@this ")
+			end, { desc = "Append range to OpenCode", expr = true })
+			vim.keymap.set("n", "goo", function()
+				return require("opencode").operator("@this ") .. "_"
+			end, { desc = "Append line to OpenCode", expr = true })
+
+			vim.keymap.set("n", "<S-C-u>", function()
+				require("opencode").command("session.half.page.up")
+			end, { desc = "Scroll OpenCode up" })
+			vim.keymap.set("n", "<S-C-d>", function()
+				require("opencode").command("session.half.page.down")
+			end, { desc = "Scroll OpenCode down" })
+		end,
+	},
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- This ensures it only loads when you open a file
+		opts = {
+			-- add any custom options here if needed, or leave empty
+		},
+		keys = {
+			-- Restore the session for the current directory
+			{
+				"<leader>qs",
+				function()
+					require("persistence").load()
+				end,
+				desc = "Restore Session",
+			},
+
+			-- Select a session to load
+			{
+				"<leader>qS",
+				function()
+					require("persistence").select()
+				end,
+				desc = "Select Session",
+			},
+
+			-- Restore the last session
+			{
+				"<leader>ql",
+				function()
+					require("persistence").load({ last = true })
+				end,
+				desc = "Restore Last Session",
+			},
+
+			-- Stop persistence (session won't be saved on exit)
+			{
+				"<leader>qd",
+				function()
+					require("persistence").stop()
+				end,
+				desc = "Don't Save Current Session",
+			},
+		},
+	},
+	{ "iamyoki/buffer-reopen.nvim", opts = {} },
 }
