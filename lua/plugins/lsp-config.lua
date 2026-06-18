@@ -29,8 +29,6 @@ return {
 					"prismals",
 					"hyprls",
 					"bashls",
-					"shfmt",
-					"shellcheck",
 				},
 			})
 		end,

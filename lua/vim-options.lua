@@ -86,6 +86,9 @@ vim.keymap.set("v", "<A-Up>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" }
 -- Copy entire file to system clipboard
 vim.keymap.set("n", "<leader>ya", 'gg"+yG', { desc = "Copy entire file to system clipboard" })
 
+-- Visual entire file to system clipboard
+vim.keymap.set("n", "<leader>va", 'ggVG', { desc = "Copy entire file to system clipboard" })
+
 -- delete all the content from the file
 vim.keymap.set("n", "<leader>da", 'gg"+dG', { desc = "delete all the content from the file" })
 
@@ -152,3 +155,33 @@ vim.keymap.set('n', '<leader>dq', function()
   vim.diagnostic.setqflist()
   vim.cmd('copen')
 end)
+
+-- Stage everything (instant, no AI)
+vim.keymap.set("n", "<leader>ga", function()
+  vim.system({ "git", "add", "-A" }, { text = true }, vim.schedule_wrap(function(obj)
+    if obj.code == 0 then
+      vim.notify("Staged all changes", vim.log.levels.INFO, { title = "git" })
+    else
+      vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "git" })
+    end
+  end))
+end, { desc = "Git: stage all" })
+
+-- Ask OpenCode to write a message and commit whatever's currently staged
+vim.keymap.set("n", "<leader>gc", function()
+  require("opencode").ask(
+    "Look at `git diff --cached`. Write a clear, conventional commit message and run `git commit`. "
+      .. "Do not stage anything else, and do not push."
+  )
+end, { desc = "OpenCode: commit staged changes" })
+
+-- Push (instant, no AI) — gP, not gp (gitsigns owns gp for preview_hunk)
+vim.keymap.set("n", "<leader>gP", function()
+  vim.system({ "git", "push" }, { text = true }, vim.schedule_wrap(function(obj)
+    if obj.code == 0 then
+      vim.notify("Pushed", vim.log.levels.INFO, { title = "git" })
+    else
+      vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "git" })
+    end
+  end))
+end, { desc = "Git: push" })
