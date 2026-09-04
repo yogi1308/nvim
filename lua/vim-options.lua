@@ -170,8 +170,14 @@ end, { desc = "Git: stage all" })
 -- Ask OpenCode to write a message and commit whatever's currently staged
 vim.keymap.set("n", "<leader>gc", function()
   require("opencode").ask(
-    "Look at `git diff --cached`. Write a clear, conventional commit message and run `git commit`. look at the previous commits for reference on how to structure the commit message "
-      .. "Do not stage anything else, and do not push."
+      "Look at `git diff --cached` and `git log --oneline -10` for context on how previous commits are structured. "
+      .. "Write a conventional commit message in this exact format:\n"
+      .. "1. A short subject line: `type: brief summary` (e.g. `feat:`, `fix:`, `refactor:`, `chore:`)\n"
+      .. "2. A blank line\n"
+      .. "3. A bullet list of the specific changes, one per line, starting with `- `\n"
+      .. "Keep each bullet concise. Do not write a single long line. "
+      .. "Do not stage anything else, and do not push. "
+      .. "Run `git commit` with the message."
   )
 end, { desc = "OpenCode: commit staged changes" })
 
