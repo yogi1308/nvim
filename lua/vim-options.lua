@@ -1,6 +1,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Load project-local .nvimrc/.exrc/.nvim.lua from the current directory
+vim.o.exrc = true
+
 -- Tab settings
 vim.cmd("set expandtab") -- use spaces instead of tabs
 vim.cmd("set tabstop=4") -- tab = 4 spaces
@@ -96,24 +99,83 @@ vim.keymap.set("n", "<leader>da", 'gg"+dG', { desc = "delete all the content fro
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 
+-- Pick compiler based on file extension (.c -> gcc, else g++)
+local function compiler_for(file)
+	return file:match("%.c$") and "gcc" or "g++"
+end
+
 vim.keymap.set("n", "<leader>cb", function()
 	local file = vim.fn.expand("%")
 	local out = vim.fn.expand("%:r")
-	vim.cmd("botright split | resize 10 | terminal g++ -g -o " .. out .. " " .. file)
-end, { desc = "Compile current cpp file" })
+	local comp = compiler_for(file)
+	vim.cmd("botright split | resize 10 | terminal " .. comp .. " -g -o " .. out .. " " .. file)
+end, { desc = "Compile current C/C++ file" })
 
--- Run current cpp executable
+-- Run current C/C++ executable
 vim.keymap.set("n", "<leader>cr", function()
 	local out = vim.fn.expand("%:r")
 	vim.cmd("botright split | resize 10 | terminal ./" .. out)
-end, { desc = "Run current cpp file" })
+end, { desc = "Run current C/C++ file" })
 
--- Compile and run current cpp file
+-- Compile and run current C/C++ file
 vim.keymap.set("n", "<leader>cx", function()
 	local file = vim.fn.expand("%")
 	local out = vim.fn.expand("%:r")
-	vim.cmd("botright split | resize 10 | terminal g++ -g -o " .. out .. " " .. file .. " && ./" .. out)
-end, { desc = "Compile and run current cpp file" })
+	local comp = compiler_for(file)
+	vim.cmd("botright split | resize 10 | terminal " .. comp .. " -g -o " .. out .. " " .. file .. " && ./" .. out)
+end, { desc = "Compile and run current C/C++ file" })
+
+-- Compile and run current file in a floating terminal
+local run_float = { win = nil, buf = nil }
+
+vim.keymap.set("n", "<leader>ct", function()
+	if run_float.win and vim.api.nvim_win_is_valid(run_float.win) then
+		vim.api.nvim_set_current_win(run_float.win)
+		return
+	end
+
+	local file = vim.fn.expand("%")
+	local comp = compiler_for(file)
+	local exe = vim.fn.fnamemodify(file, ":p:r")
+	local cmd = comp
+		.. " -g -o "
+		.. vim.fn.shellescape(exe)
+		.. " "
+		.. vim.fn.shellescape(file)
+		.. " && "
+		.. vim.fn.shellescape(exe)
+
+	local buf = vim.api.nvim_create_buf(false, true)
+	local width = math.max(60, math.floor(vim.o.columns * 0.75))
+	local height = math.max(15, math.floor(vim.o.lines * 0.75))
+	local win = vim.api.nvim_open_win(buf, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = math.floor((vim.o.lines - height) / 2),
+		col = math.floor((vim.o.columns - width) / 2),
+		style = "minimal",
+		border = "rounded",
+		title = " Compile & Run ",
+	})
+	run_float.win, run_float.buf = win, buf
+
+	local function close_float()
+		if vim.api.nvim_win_is_valid(win) then
+			vim.api.nvim_win_close(win, true)
+		end
+		if vim.api.nvim_buf_is_valid(buf) then
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end
+		run_float.win, run_float.buf = nil, nil
+	end
+
+	local map_opts = { buffer = buf, nowait = true, silent = true }
+	vim.keymap.set("t", "<Esc>", close_float, map_opts)
+	vim.keymap.set("t", "<C-c>", close_float, map_opts)
+
+	vim.fn.termopen({ "sh", "-c", cmd })
+end, { desc = "Compile and run in floating terminal" })
 
 -- blinking block cursor
 vim.opt.guicursor = "n-v-c:block-blinkon500-blinkoff500-blinkwait500,i-ci-ve:ver25,r-cr:hor20"
