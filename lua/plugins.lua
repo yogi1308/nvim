@@ -48,6 +48,7 @@ return {
 		build = function()
 			vim.fn["mkdp#util#install"]()
 		end,
+        -- replace window.history.replaceState(null, '', `/${bufnr}`) with window.history.replaceState(null, '', `/page/${bufnr}`) in home/yogi/.local/share/nvim/lazy/markdown-preview.nvim/app/pages/index.jsx on update
 	},
 	{
 		"kdheepak/lazygit.nvim",

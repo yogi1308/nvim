@@ -48,7 +48,11 @@ return {
 				end,
 				cwd = "${workspaceFolder}",
 				stopOnEntry = false,
-                console = "integratedTerminal",
+				console = "integratedTerminal",
+				-- Use project venv python for debugging
+				pythonPath = function()
+					return require("python_venv").find() or "python3"
+				end,
 			},
 		}
 
@@ -65,13 +69,38 @@ return {
 			dapui.close()
 		end
 
-		vim.keymap.set("n", "<Leader>dt", dap.toggle_breakpoint, {})
-		vim.keymap.set("n", "<Leader>dc", dap.continue, {})
-
-		-- Run current python file
+		-- Debugging keymaps
+		vim.keymap.set("n", "<Leader>dt", dap.toggle_breakpoint, { desc = "DAP toggle breakpoint" })
+		vim.keymap.set("n", "<Leader>dc", dap.continue, { desc = "DAP continue / start" })
+		vim.keymap.set("n", "<Leader>do", dap.step_over, { desc = "DAP step over" })
+		vim.keymap.set("n", "<Leader>di", dap.step_into, { desc = "DAP step into" })
+		vim.keymap.set("n", "<Leader>dO", dap.step_out, { desc = "DAP step out" })
+		vim.keymap.set("n", "<Leader>dx", dap.terminate, { desc = "DAP terminate" })
+		vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle DAP UI" })
+		vim.keymap.set({ "n", "v" }, "<Leader>de", function()
+			dapui.eval()
+		end, { desc = "DAP eval expression" })
+		vim.keymap.set("n", "<Leader>dC", dap.run_to_cursor, { desc = "DAP run to cursor" })
+		vim.keymap.set("n", "<Leader>dT", dap.clear_breakpoints, { desc = "DAP clear all breakpoints" })
+		vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
+			local widgets = require("dap.ui.widgets")
+			local hover = widgets.hover()
+			-- close the float as soon as the cursor moves in the source buffer
+			vim.api.nvim_create_autocmd({ "CursorMoved", "BufLeave", "WinLeave" }, {
+				once = true,
+				callback = function()
+					if hover and hover.close then
+						hover.close()
+					end
+				end,
+			})
+		end, { desc = "DAP hover" })
 		vim.keymap.set("n", "<leader>pr", function()
+			local py = require("python_venv").find() or "python3"
 			local file = vim.fn.expand("%")
-			vim.cmd("botright split | resize 10 | terminal python3 " .. file)
+			vim.cmd(
+				"botright split | resize 10 | terminal " .. vim.fn.shellescape(py) .. " " .. vim.fn.shellescape(file)
+			)
 		end, { desc = "Run current python file" })
 	end,
 }
